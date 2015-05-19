@@ -2,8 +2,8 @@ package matasano
 
 /*
 
-PKCS#7 padding validation
-=========================
+15. PKCS#7 padding validation
+=============================
 
 Write a function that takes a plaintext, determines if it has valid PKCS#7
 padding, and strips the padding off.
