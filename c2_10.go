@@ -25,18 +25,17 @@ func EncryptAESInCBCMode(key, iv, plaintext []byte) (ciphertext []byte, err erro
 
 	for i := 0; i < count; i++ {
 
-		nextblock, err := FixedXor(plaintext[i*bs:(i+1)*bs], lastblock)
+		nextblock, err := FixedXor(Block(i, bs, plaintext), lastblock)
 		if err != nil {
 			return nil, err
 		}
 
 		cipher.Encrypt(
-			ciphertext[i*bs:(i+1)*bs],
+			Block(i, bs, ciphertext),
 			nextblock,
 		)
 
-		lastblock = ciphertext[i*bs : (i+1)*bs]
-
+		lastblock = Block(i, bs, ciphertext)
 	}
 
 	return ciphertext, nil
@@ -67,12 +66,12 @@ func DecryptAESInCBCMode(key, iv, ciphertext []byte) (plaintext []byte, err erro
 		if i == 0 {
 			nextblock = iv
 		} else {
-			nextblock = ciphertext[(i-1)*bs : i*bs]
+			nextblock = Block(i-1, bs, ciphertext)
 		}
 
 		cipher.Decrypt(
 			block,
-			ciphertext[i*bs:(i+1)*bs],
+			Block(i, bs, ciphertext),
 		)
 
 		block, err = FixedXor(block, nextblock)
@@ -81,7 +80,7 @@ func DecryptAESInCBCMode(key, iv, ciphertext []byte) (plaintext []byte, err erro
 		}
 
 		copy(
-			plaintext[i*bs:(i+1)*bs],
+			Block(i, bs, plaintext),
 			block,
 		)
 
