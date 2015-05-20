@@ -37,12 +37,12 @@ func HighlightBytes(bytes []byte, indexes ...int) {
 	reset := "\x1b[0m"
 	ptr := 0
 	for _, i := range indexes {
-		fmt.Printf("%s%x%s%x",
+		fmt.Printf("%s% x %s% x ",
 			dark, bytes[ptr:i], reset, bytes[i:i+1])
 		ptr = i + 1
 	}
 	if ptr < len(bytes) {
-		fmt.Printf("%s%x%s", dark, bytes[ptr:], reset)
+		fmt.Printf("%s% x%s", dark, bytes[ptr:], reset)
 	}
 	print("\n")
 }
