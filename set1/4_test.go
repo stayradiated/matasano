@@ -10,7 +10,7 @@ import (
 )
 
 func TestDetectSingleByteXor(t *testing.T) {
-	file, err := os.Open("./c1_4.txt")
+	file, err := os.Open("./4.txt")
 	if err != nil {
 		log.Fatal(err)
 	}

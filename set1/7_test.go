@@ -10,7 +10,7 @@ import (
 )
 
 func TestDecryptAESInECBMode(t *testing.T) {
-	file, err := os.Open("./c1_7.txt")
+	file, err := os.Open("./7.txt")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -37,7 +37,7 @@ func TestDecryptAESInECBMode(t *testing.T) {
 }
 
 func TestEncryptAESInECBMode(t *testing.T) {
-	file, err := os.Open("./c1_7.txt")
+	file, err := os.Open("./7.txt")
 	if err != nil {
 		t.Fatal(err)
 	}

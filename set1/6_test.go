@@ -52,7 +52,7 @@ func TestFindKeysize(t *testing.T) {
 }
 
 func TestSolveRepeatingKeyXor(t *testing.T) {
-	file, err := os.Open("./c1_6.txt")
+	file, err := os.Open("./6.txt")
 	if err != nil {
 		log.Fatal(err)
 	}

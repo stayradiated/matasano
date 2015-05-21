@@ -10,7 +10,7 @@ import (
 
 func TestDetectAESinECBMode(t *testing.T) {
 
-	file, err := os.Open("./c1_8.txt")
+	file, err := os.Open("./8.txt")
 	if err != nil {
 		t.Fatal(err)
 	}

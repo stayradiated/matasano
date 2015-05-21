@@ -25,7 +25,7 @@ func EncryptAESInCBCMode(key, iv, plaintext []byte) (ciphertext []byte, err erro
 
 	for i := 0; i < count; i++ {
 
-		nextblock, err := FixedXor(Block(i, bs, plaintext), lastblock)
+		nextblock, err := XOR(Block(i, bs, plaintext), lastblock)
 		if err != nil {
 			return nil, err
 		}
@@ -74,7 +74,7 @@ func DecryptAESInCBCMode(key, iv, ciphertext []byte) (plaintext []byte, err erro
 			Block(i, bs, ciphertext),
 		)
 
-		block, err = FixedXor(block, nextblock)
+		block, err = XOR(block, nextblock)
 		if err != nil {
 			return nil, err
 		}
