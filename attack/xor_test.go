@@ -7,12 +7,12 @@ import (
 	"github.com/stayradiated/matasano/xor"
 )
 
-func TestRepeatingXOR(t *testing.T) {
+func TestRepeatingByteXOR(t *testing.T) {
 	key := byte(40)
 	message := []byte("Learn from yesterday, live for today, hope for tomorrow. The important thing is not to stop questioning.")
 
 	ciphertext := xor.Repeat([]byte{key}, message)
-	output, foundKey, _ := RepeatingXOR(ciphertext)
+	output, foundKey, _ := RepeatingByteXOR(ciphertext)
 
 	if foundKey != key {
 		t.Log(foundKey)

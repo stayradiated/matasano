@@ -2,14 +2,16 @@ package matasano
 
 import (
 	"bytes"
-	"encoding/hex"
 	"io/ioutil"
 	"log"
 	"os"
 	"testing"
+
+	"github.com/stayradiated/matasano/attack"
+	"github.com/stayradiated/matasano/enc/hex"
 )
 
-func TestDetectSingleByteXor(t *testing.T) {
+func Test(t *testing.T) {
 	file, err := os.Open("./4.txt")
 	if err != nil {
 		log.Fatal(err)
@@ -17,18 +19,32 @@ func TestDetectSingleByteXor(t *testing.T) {
 	defer file.Close()
 
 	data, _ := ioutil.ReadAll(file)
-	lines := bytes.Split(data, []byte{10})
+	lines := bytes.Split(data, []byte{'\n'})
 
 	for i, line := range lines {
-		rawBytes := make([]byte, len(line)/2)
-		hex.Decode(rawBytes, line)
-		lines[i] = rawBytes
+		lines[i], _ = hex.Decode(string(line))
 	}
 
-	bestLine := DetectSingleByteXor(lines)
-	expected := "Now that the party is jumping\n"
+	plaintext := DetectSingleByteXor(lines)
+	expected := []byte("Now that the party is jumping\n")
 
-	if string(bestLine) != expected {
-		t.Errorf("did not find correct solution: %v", bestLine)
+	if bytes.Equal(plaintext, expected) != true {
+		t.Log(string(plaintext))
+		t.Log(string(expected))
+		t.Error("did not find the correct ciphertext")
 	}
+}
+
+func DetectSingleByteXor(input [][]byte) (plaintext []byte) {
+	plaintext = []byte{}
+	score := float64(0)
+
+	for _, line := range input {
+		if p, _, s := attack.RepeatingByteXOR(line); s > score {
+			score = s
+			plaintext = p
+		}
+	}
+
+	return plaintext
 }
