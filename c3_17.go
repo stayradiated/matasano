@@ -3,8 +3,6 @@ package matasano
 import (
 	"bytes"
 	crand "crypto/rand"
-	"math/rand"
-	"time"
 )
 
 /*
@@ -71,32 +69,15 @@ It's an attack that targets a specific bit of code that handles decryption. You
 can mount a padding oracle on any CBC block, whether it's padded or not.
 */
 
-func EncryptRandomMessage() (ciphertext, iv []byte) {
-
+func EncryptBase64EncodedMessageWithAESInCBCMode(message string) (ciphertext, iv []byte) {
 	key := []byte("irresponsibility")
 
 	iv = make([]byte, 16)
 	crand.Read(iv)
 
-	messages := []string{
-		"MDAwMDAwTm93IHRoYXQgdGhlIHBhcnR5IGlzIGp1bXBpbmc=",
-		"MDAwMDAxV2l0aCB0aGUgYmFzcyBraWNrZWQgaW4gYW5kIHRoZSBWZWdhJ3MgYXJlIHB1bXBpbic=",
-		"MDAwMDAyUXVpY2sgdG8gdGhlIHBvaW50LCB0byB0aGUgcG9pbnQsIG5vIGZha2luZw==",
-		"MDAwMDAzQ29va2luZyBNQydzIGxpa2UgYSBwb3VuZCBvZiBiYWNvbg==",
-		"MDAwMDA0QnVybmluZyAnZW0sIGlmIHlvdSBhaW4ndCBxdWljayBhbmQgbmltYmxl",
-		"MDAwMDA1SSBnbyBjcmF6eSB3aGVuIEkgaGVhciBhIGN5bWJhbA==",
-		"MDAwMDA2QW5kIGEgaGlnaCBoYXQgd2l0aCBhIHNvdXBlZCB1cCB0ZW1wbw==",
-		"MDAwMDA3SSdtIG9uIGEgcm9sbCwgaXQncyB0aW1lIHRvIGdvIHNvbG8=",
-		"MDAwMDA4b2xsaW4nIGluIG15IGZpdmUgcG9pbnQgb2g=",
-		"MDAwMDA5aXRoIG15IHJhZy10b3AgZG93biBzbyBteSBoYWlyIGNhbiBibG93",
-	}
-
-	rand.Seed(time.Now().UnixNano())
-	index := rand.Intn(len(messages))
-	message := ReadBase64EncodedBytes([]byte(messages[index]))
-
-	message = PadBytes(message, 16)
-	ciphertext, _ = EncryptAESInCBCMode(key, iv, message)
+	plaintext := ReadBase64EncodedBytes([]byte(message))
+	plaintext = PadBytes(plaintext, 16)
+	ciphertext, _ = EncryptAESInCBCMode(key, iv, plaintext)
 
 	return ciphertext, iv
 }
