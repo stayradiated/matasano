@@ -2,14 +2,14 @@ package xor
 
 // Slices xor's two slices together
 func Slices(a, b []byte) (dst []byte) {
-	// use smallest slice length
-	l := len(a)
-	if l > len(b) {
-		l = len(b)
+	if len(a) != len(b) {
+		panic("slices must be the same length")
 	}
-	dst = make([]byte, l)
-	for i := 0; i < l; i++ {
-		dst[i] = a[i] ^ b[i]
+
+	dst = make([]byte, len(a))
+	for i, x := range a {
+		y := b[i]
+		dst[i] = x ^ y
 	}
 	return dst
 }
@@ -17,8 +17,8 @@ func Slices(a, b []byte) (dst []byte) {
 // Repeat xor's a single byte against all the bytes in a slice
 func Repeat(x byte, src []byte) (dst []byte) {
 	dst = make([]byte, len(src))
-	for i, b := range src {
-		dst[i] = x ^ b
+	for i, y := range src {
+		dst[i] = x ^ y
 	}
 	return dst
 }
