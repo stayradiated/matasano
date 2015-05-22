@@ -7,10 +7,7 @@ import (
 	"io"
 	"log"
 	"os"
-	"sort"
 	"strconv"
-
-	"github.com/stayradiated/matasano/score"
 )
 
 func main() {
@@ -32,7 +29,7 @@ func main() {
 	reader := bufio.NewReader(f)
 
 	total := float64(0)
-	dict := make(map[byte]float64)
+	alphabet := make(map[byte]float64)
 	data := make([]byte, 1024)
 
 	for {
@@ -40,10 +37,10 @@ func main() {
 
 		if n > 0 {
 			for _, b := range data[:n] {
-				if _, ok := dict[b]; ok != true {
-					dict[b] = 0
+				if _, ok := alphabet[b]; ok != true {
+					alphabet[b] = 0
 				}
-				dict[b] += 1
+				alphabet[b] += 1
 				total += 1
 			}
 		}
@@ -55,17 +52,11 @@ func main() {
 		}
 	}
 
-	alphabet := make(score.Alphabet, 0)
-	for b, v := range dict {
-		alphabet = append(alphabet, score.Letter{
-			Value:     b,
-			Frequency: v / total * 100,
-		})
+	for key, value := range alphabet {
+		alphabet[key] = value / total * 100
 	}
 
-	sort.Sort(alphabet)
-
-	for _, letter := range alphabet {
-		fmt.Printf("{%s, %.5f},\n", strconv.QuoteRune(rune(letter.Value)), letter.Frequency)
+	for key, value := range alphabet {
+		fmt.Printf("%s: %.5f,\n", strconv.QuoteRune(rune(key)), value)
 	}
 }
