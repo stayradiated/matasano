@@ -14,10 +14,11 @@ func Slices(a, b []byte) (dst []byte) {
 	return dst
 }
 
-// Repeat xor's a single byte against all the bytes in a slice
-func Repeat(x byte, src []byte) (dst []byte) {
+// Repeat xor's a slice against another slice that is constantly repeated
+func Repeat(b []byte, src []byte) (dst []byte) {
 	dst = make([]byte, len(src))
 	for i, y := range src {
+		x := b[i%len(b)]
 		dst[i] = x ^ y
 	}
 	return dst

@@ -34,17 +34,18 @@ func TestSlices(t *testing.T) {
 func TestRepeat(t *testing.T) {
 
 	tests := map[string][]string{
-		"0a0a":   []string{"0a", "0000"},
-		"3f0011": []string{"ff", "c0ffee"},
+		"0a0a":                     []string{"0a", "0000"},
+		"3f0011":                   []string{"ff", "c0ffee"},
+		"abcdefabcdefabcdefabcdef": []string{"abcdef", "000000000000000000000000"},
 	}
 
 	for e, test := range tests {
 
-		x, _ := hex.Decode(test[0])
+		b, _ := hex.Decode(test[0])
 		src, _ := hex.Decode(test[1])
 		expected, _ := hex.Decode(e)
 
-		actual := Repeat(x[0], src)
+		actual := Repeat(b, src)
 
 		if bytes.Equal(actual, expected) != true {
 			t.Logf("%x", actual)
