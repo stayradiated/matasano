@@ -37,9 +37,6 @@ func main() {
 
 		if n > 0 {
 			for _, b := range data[:n] {
-				if _, ok := alphabet[b]; ok != true {
-					alphabet[b] = 0
-				}
 				alphabet[b] += 1
 				total += 1
 			}
